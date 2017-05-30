@@ -1,0 +1,86 @@
+import math
+from collections import defaultdict
+
+
+class Knapsack:
+
+    def __init__(self, capacity):
+        self.items_list = None
+        self.capacity = capacity
+        self.value_memo = None
+        self.trace_dict = None
+
+    def set_items(self, items_list):
+        self.items_list = items_list
+        self.value_memo = defaultdict(dict)
+        self.trace_dict = defaultdict(dict)
+
+    def max_value(self, index, current_capacity=None):
+        print("Current capacity: %s" % str(current_capacity))
+
+        if current_capacity is None:
+            current_capacity = self.capacity
+
+        if (index, current_capacity) in self.value_memo:
+            return self.value_memo[(index, current_capacity)]
+
+        # Base case
+        if current_capacity < 0 or index >= len(self.items_list):
+            return 0
+
+        max_value_drop_current = self.max_value(index + 1, current_capacity)
+        print(index)
+        if current_capacity - self.items_list[index][1] < 0:
+            max_value = max_value_drop_current
+            self.trace_dict[max_value] = max_value_drop_current
+        else:
+            max_value_rem =  self.max_value(
+                index + 1, current_capacity - self.items_list[index][1])
+            max_value_pick_current = (
+                self.items_list[index][2] + max_value_rem
+            )
+            if max_value_drop_current > max_value_pick_current:
+                max_value = max_value_drop_current
+                self.trace_dict[max_value] = max_value_drop_current
+            else:
+                max_value = max_value_pick_current
+                self.trace_dict[max_value] = max_value_rem
+
+        self.value_memo[(index, current_capacity)] = max_value
+        return max_value
+
+def main():
+    sack = Knapsack(10)
+    items_list = [
+        ("Hat", 5, 1000),
+        ("Glasses", 1, 500),
+        ("Water", 7, 3000),
+        ("Map", 1, 2000),
+        ("Clothes", 8, 2000),
+        ("Compass", 3, 1500),
+        ("Binoculars", 6, 400),
+        ("Phone", 2, 4000),
+        ("Refrigerator", 30, 200),
+        ("Jetpack", 20, 20000),
+        ("Food", 6, 5000),
+        ("Book", 3, 1000),
+        ("Flares", 3, 2500),
+        ("Flint", 1, 2100),
+        ("Brick", 4, 100),
+    ]
+    sack.set_items(items_list)
+    max_value = sack.max_value(0)
+    print("Maximum value: %s" % str(max_value))
+    # print(sorted(sack.value_memo))
+    for i in sorted(sack.value_memo):
+        print(str(i) + " - " + str(sack.value_memo[i]))
+    for key, value in sack.trace_dict.items():
+        print(key, value)
+
+
+
+
+
+
+if __name__ == "__main__":
+    main()
