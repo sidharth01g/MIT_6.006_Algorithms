@@ -15,8 +15,8 @@ def get_min_refuels(x, capacity):
         if current < len(x) - 1:
             last_refuel = current
             print(
-                'Refuel at station: ', last_refuel,
-                ' at distance ', x[last_refuel])
+                'Refuel at station ', last_refuel,
+                ' at distance:', x[last_refuel])
             count += 1
 
         if current == len(x) - 1:
@@ -25,10 +25,9 @@ def get_min_refuels(x, capacity):
 
 def main():
     x = [0, 21, 59, 68, 82, 93, 109, 125]
-    x = [0, 30, 41]
     c = 40
     print('Fuel station distances: ', x)
-    print('Min refuls: ', get_min_refuels(x, c))
+    print('Minimum number of refeuls: ', get_min_refuels(x, c))
 
 
 if __name__ == '__main__':
