@@ -5,7 +5,6 @@ import numpy as np
 def get_groups(ages, interval):
     ages = list(ages)
     ages.sort()
-    print(ages)
     interval = float(interval)
     current = 0
     groups = []
